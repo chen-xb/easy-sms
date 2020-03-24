@@ -72,10 +72,10 @@ class Messenger
                 $result = $gateway->send($to, $message, new Config($config));
                 return array_merge(['gateway' => $gateway->getName()], $result);
             } catch (\Throwable $e) {
-                $errors[$gateway->getName()] = $e->getMessage();
+                $errors[$gateway] = $e->getMessage();
             }
         }
 
-        throw new NoGatewayAvailableException('all gateways fail, detail use $exception->getError() get ', 0, $errors);
+        throw new NoGatewayAvailableException('all gateways fail, use $exception->getError() see detail', 0, $errors);
     }
 }

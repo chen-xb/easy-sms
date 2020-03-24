@@ -9,9 +9,7 @@
 
 namespace Chenxb\Sms\Tests;
 
-use Chenxb\Sms\Gateways\Aliyun;
 use Chenxb\Sms\Gateways\KuaiYiTong;
-use Chenxb\Sms\Gateways\XuanWu;
 use Chenxb\Sms\Sms;
 use Chenxb\Sms\Strategies\OrderStrategy;
 use Dotenv\Dotenv;
@@ -46,23 +44,22 @@ class SmsTest extends TestCase
             // 可用的网关配置
             'gateways' => [
                 // 玄武科技
-                XuanWu::class => [
+                'xuan_wu' => [
                     'account' => getenv('XUAN_WU_ACCOUNT'),
                     'password' => getenv('XUAN_WU_PASSWORD'),
                     'batch_name' => getenv('XUAN_WU_BATCH_NAME'),
                 ],
                 // 快易通
-                KuaiYiTong::class => [
+                'kuai_yi_tong' => [
                     'appkey' => getenv('KUAI_YI_TONG_APPKEY'),
                     'appsecret' => getenv('KUAI_YI_TONG_APPSECRET')
                 ],
                 // 阿里云
-                Aliyun::class => [
+                'aliyun' => [
                     'access_key_id' => getenv('ALIYUN_ACCESS_KEY_ID'),
                     'access_key_secret' => getenv('ALIYUN_ACCESS_KEY_ID_SECRET'),
                     'sign_name' => getenv('ALIYUN_SIGN_NAME'),
                 ],
-
             ],
         ];
 
@@ -87,7 +84,7 @@ class SmsTest extends TestCase
             // 可用的网关配置
             'gateways' => [
                 // 玄武科技
-                XuanWu::class => [
+                'xuan_wu' => [
                     'account' => getenv('XUAN_WU_ACCOUNT'),
                     'password' => getenv('XUAN_WU_PASSWORD'),
                     'batch_name' => getenv('XUAN_WU_BATCH_NAME'),
@@ -117,7 +114,7 @@ class SmsTest extends TestCase
             // 可用的网关配置
             'gateways' => [
                 // 阿里云
-                Aliyun::class => [
+                'aliyun' => [
                     'access_key_id' => getenv('ALIYUN_ACCESS_KEY_ID'),
                     'access_key_secret' => getenv('ALIYUN_ACCESS_KEY_ID_SECRET'),
                     'sign_name' => getenv('ALIYUN_SIGN_NAME'),
@@ -151,7 +148,7 @@ class SmsTest extends TestCase
             // 可用的网关配置
             'gateways' => [
                 // 快易通
-                KuaiYiTong::class => [
+                'kuai_yi_tong' => [
                     'appkey' => getenv('KUAI_YI_TONG_APPKEY'),
                     'appsecret' => getenv('KUAI_YI_TONG_APPSECRET')
                 ],

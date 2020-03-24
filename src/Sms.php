@@ -146,10 +146,12 @@ class Sms
     public function makeGateway(string $class): GatewayInterface
     {
         try {
-            $class = ucfirst($class);
+            $class = implode(array_map(function ($item) {
+                return ucfirst($item);
+            }, explode('_', $class)));
 
             if (empty($this->gateways[$class])) {
-                $reflectionClass = new \ReflectionClass($class);
+                $reflectionClass = new \ReflectionClass("Chenxb\\Sms\\Gateways\\{$class}");
                 $this->gateways[$class] = $reflectionClass->newInstance();
             }
 
