@@ -9,7 +9,7 @@
 $ composer require chenxb/sms -vvv
 ```
 
-## 配置
+## 使用案例
 ```php
 <?php
 
