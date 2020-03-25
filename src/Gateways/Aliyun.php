@@ -34,17 +34,30 @@ class Aliyun implements GatewayInterface
 
     const ENDPOINT_SIGNATURE_VERSION = '1.0';
 
-
+    /**
+     * return gateway name.
+     *
+     * @return string
+     */
     public function getName(): string
     {
         return 'aliyun';
     }
 
+    /**
+     * send message.
+     *
+     * @param PhoneNumberInterface $to
+     * @param MessageInterface $message
+     * @param Config $config
+     * @return array
+     * @throws GatewayException
+     */
     public function send(PhoneNumberInterface $to, MessageInterface $message, Config $config): array
     {
         $params = [
             'RegionId' => self::ENDPOINT_REGION_ID,
-            'AccessKeyId' => $config->get('access_key_id'),
+            'AccessKeyId' => $config['access_key_id'],
             'Format' => self::ENDPOINT_FORMAT,
             'SignatureMethod' => self::ENDPOINT_SIGNATURE_METHOD,
             'SignatureVersion' => self::ENDPOINT_SIGNATURE_VERSION,
@@ -53,7 +66,7 @@ class Aliyun implements GatewayInterface
             'Action' => self::ENDPOINT_METHOD,
             'Version' => self::ENDPOINT_VERSION,
             'PhoneNumbers' => !\is_null($to->getIDDCode()) ? strval($to->getZeroPrefixedNumber()) : $to->getNumber(),
-            'SignName' => $config->get('sign_name'),
+            'SignName' => $config['sign_name'],
             'TemplateCode' => $message->getTemplate(),
             'TemplateParam' => json_encode($message->getData(), JSON_FORCE_OBJECT),
         ];
@@ -75,10 +88,10 @@ class Aliyun implements GatewayInterface
 
             // 结果分析
             if (!$json) {
-                throw new GatewayException("XuanWu Gateway Response Invalid: {$body}");
+                throw new GatewayException("Aliyun Gateway Response Invalid: {$body}");
             }
             if ('OK' != $json['Code']) {
-                throw new GatewayException($json['Message'], $json['Code']);
+                throw new GatewayException("Aliyun Gateway Response Error: {$json['Message']}", $json['Code']);
             }
 
             return $json;

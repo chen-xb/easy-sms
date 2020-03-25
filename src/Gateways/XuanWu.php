@@ -18,7 +18,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
 /**
- * Class Xuanwu
+ * Class XuanWu
  * @package Chenxb\Sms\Gateways
  */
 class XuanWu implements GatewayInterface
@@ -35,7 +35,7 @@ class XuanWu implements GatewayInterface
      */
     public function getName(): string
     {
-        return 'xuanwu';
+        return 'xuan_wu';
     }
 
     /**
@@ -49,12 +49,10 @@ class XuanWu implements GatewayInterface
      */
     public function send(PhoneNumberInterface $to, MessageInterface $message, Config $config): array
     {
-        // 组织请求内容
+        // 组织请求参数
         $body = json_encode([
             'batchName' => $config['batch_name'],
-            'items' => [
-                ['to' => $to->getNumber()]
-            ],
+            'items' => [['to' => $to->getNumber()]],
             'content' => $message->getContent(),
             'msgType' => 'sms',
         ], JSON_UNESCAPED_UNICODE);
@@ -83,16 +81,16 @@ class XuanWu implements GatewayInterface
 
             // 结果分析
             if (!$json) {
-                throw new GatewayException("Xuanwu Gateway Response Invalid: {$body}");
+                throw new GatewayException("XuanWu Gateway Response Invalid: {$body}");
             }
             if ('0' != $json['code']) {
-                throw new GatewayException("Xuanwu Gateway Response Error: {$json['msg']}");
+                throw new GatewayException("XuanWu Gateway Response Error: {$json['msg']}");
             }
 
             return $json;
 
         } catch (GuzzleException $e) {
-            throw new GatewayException("Xuanwu Gateway Http Request Error: {$e->getMessage()}");
+            throw new GatewayException("XuanWu Gateway Http Request Error: {$e->getMessage()}");
         }
     }
 }

@@ -18,7 +18,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
 /**
- * Class Xuanwu
+ * Class KuaiYiTong
  * @package Chenxb\Sms\Gateways
  */
 class KuaiYiTong implements GatewayInterface
@@ -35,7 +35,7 @@ class KuaiYiTong implements GatewayInterface
      */
     public function getName(): string
     {
-        return 'kuaiyitong';
+        return 'kuai_yi_tong';
     }
 
     /**
@@ -49,6 +49,7 @@ class KuaiYiTong implements GatewayInterface
      */
     public function send(PhoneNumberInterface $to, MessageInterface $message, Config $config): array
     {
+        // 组织请求参数
         $body = json_encode([
             'appkey' => $config['appkey'],
             'appsecret' => $config['appsecret'],
@@ -64,9 +65,7 @@ class KuaiYiTong implements GatewayInterface
             ]);
 
             // 执行请求
-            $response = $client->post(static::API_ACTION, [
-                'body' => $body
-            ]);
+            $response = $client->post(static::API_ACTION, ['body' => $body]);
 
             // 结果解析
             $body = $response->getBody();

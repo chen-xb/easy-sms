@@ -158,7 +158,7 @@ class Sms
             return $this->gateways[$class];
 
         } catch (\ReflectionException $e) {
-            throw new RuntimeException("{$class} Not Exists");
+            throw new RuntimeException("Chenxb\\Sms\\Gateways\\{$class} Not Exists");
         }
     }
 
