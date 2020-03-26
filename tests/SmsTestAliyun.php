@@ -15,7 +15,7 @@ use Chenxb\Sms\Strategies\OrderStrategy;
 use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
 
-class SmsTest extends TestCase
+class SmsTestAliyun extends TestCase
 {
 
     /**
@@ -43,17 +43,6 @@ class SmsTest extends TestCase
 
             // 可用的网关配置
             'gateways' => [
-                // 玄武科技
-                'xuan_wu' => [
-                    'account' => getenv('XUAN_WU_ACCOUNT'),
-                    'password' => getenv('XUAN_WU_PASSWORD'),
-                    'batch_name' => getenv('XUAN_WU_BATCH_NAME'),
-                ],
-                // 快易通
-                'kuai_yi_tong' => [
-                    'appkey' => getenv('KUAI_YI_TONG_APPKEY'),
-                    'appsecret' => getenv('KUAI_YI_TONG_APPSECRET')
-                ],
                 // 阿里云
                 'aliyun' => [
                     'access_key_id' => getenv('ALIYUN_ACCESS_KEY_ID'),
@@ -67,34 +56,34 @@ class SmsTest extends TestCase
     }
 
     /**
-     * 测试只要一个短信商成功即可
+     * 正常使用阿里云
      *
-     * @throws NoGatewayAvailableException
+     * @throws \Chenxb\Sms\Exceptions\NoGatewayAvailableException
      * @throws \Chenxb\Sms\Exceptions\RuntimeException
      */
     public function testSuccess()
     {
-        $result = $this->sms->send(
-            getenv('TEST_PHONE_NUMBER'),
-            '验证码为：111111。验证码5分钟有效，请勿泄漏给他人。'
-        );
+        $result = $this->sms->send(getenv('TEST_PHONE_NUMBER'), [
+            'template' => 'SMS_186618722',
+            'data' => ['code' => 222222]
+        ]);
 
         $this->assertIsArray($result);
     }
 
     /**
-     * 测试所有的短信商都失败
+     * 异常使用阿里云
      *
-     * @throws NoGatewayAvailableException
+     * @throws \Chenxb\Sms\Exceptions\NoGatewayAvailableException
      * @throws \Chenxb\Sms\Exceptions\RuntimeException
      */
     public function testError()
     {
         $this->expectException(NoGatewayAvailableException::class);
 
-        $this->sms->send(
-            '',
-            '验证码为：111111。验证码5分钟有效，请勿泄漏给他人。'
-        );
+        $this->sms->send('', [
+            'template' => 'SMS_186618722',
+            'data' => ['code' => 222222]
+        ]);
     }
 }

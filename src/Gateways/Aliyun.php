@@ -91,7 +91,7 @@ class Aliyun implements GatewayInterface
                 throw new GatewayException("Aliyun Gateway Response Invalid: {$body}");
             }
             if ('OK' != $json['Code']) {
-                throw new GatewayException("Aliyun Gateway Response Error: {$json['Message']}", $json['Code']);
+                throw new GatewayException("Aliyun Gateway Response Error: {$json['Message']}");
             }
 
             return $json;

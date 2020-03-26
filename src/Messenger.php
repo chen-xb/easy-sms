@@ -68,7 +68,8 @@ class Messenger
         $errors = [];
         foreach ($gateways as $gateway => $config) {
             try {
-                $result = $this->sms->makeGateway($gateway)->send($to, $message, new Config($config));
+                $object = $this->sms->makeGateway($gateway);
+                $result = $object->send($to, $message, new Config($config));
                 return array_merge(['gateway' => $gateway], $result);
             } catch (\Throwable $e) {
                 $errors[$gateway] = $e->getMessage();
