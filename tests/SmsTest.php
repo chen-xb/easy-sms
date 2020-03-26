@@ -9,6 +9,7 @@
 
 namespace Chenxb\Sms\Tests;
 
+use Chenxb\Sms\Exceptions\NoGatewayAvailableException;
 use Chenxb\Sms\Gateways\KuaiYiTong;
 use Chenxb\Sms\Sms;
 use Chenxb\Sms\Strategies\OrderStrategy;
@@ -123,11 +124,45 @@ class SmsTest extends TestCase
         ];
 
         $result = Sms::make($config)->send(getenv('TEST_PHONE_NUMBER'), [
-            'template' => 'SMS_172007523',
+            'template' => 'SMS_186618722',
             'data' => ['code' => 654321]
         ]);
 
         $this->assertIsArray($result);
+    }
+
+    /**
+     * 测试阿里云短信接口
+     *
+     * @throws \Chenxb\Sms\Exceptions\NoGatewayAvailableException
+     * @throws \Chenxb\Sms\Exceptions\RuntimeException
+     */
+    public function testAliyunFail()
+    {
+        $config = [
+            // HTTP 请求的超时时间（秒）
+            'timeout' => 30.0,
+            // 错误日志记录
+            'error_log' => '/tmp/sms.log',
+            // 执行策略
+            'strategy' => OrderStrategy::class,
+            // 可用的网关配置
+            'gateways' => [
+                // 阿里云
+                'aliyun' => [
+                    'access_key_id' => getenv('ALIYUN_ACCESS_KEY_ID'),
+                    'access_key_secret' => getenv('ALIYUN_ACCESS_KEY_ID_SECRET'),
+                    'sign_name' => '青瓷游戏',
+                ],
+            ],
+        ];
+
+        $this->expectException(NoGatewayAvailableException::class);
+
+        Sms::make($config)->send(getenv('TEST_PHONE_NUMBER'), [
+            'template' => 'SMS_186618722',
+            'data' => ['code' => 654321]
+        ]);
     }
 
     /**
